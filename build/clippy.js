@@ -7,22 +7,15 @@ var clippy = {};
  */
 clippy.Agent = function (path, data, sounds) {
     this.path = path;
-
     this._queue = new clippy.Queue($.proxy(this._onQueueEmpty, this));
-
     this._el = $('<div class="clippy"></div>').hide();
-
     $(document.body).append(this._el);
-
     this._animator = new clippy.Animator(this._el, path, data, sounds);
-
     this._balloon = new clippy.Balloon(this._el);
-
     this._setupEvents();
 };
 
 clippy.Agent.prototype = {
-
     /**************************** API ************************************/
 
     /***
@@ -164,6 +157,9 @@ clippy.Agent.prototype = {
         if (this._el.css('top') === 'auto' || !this._el.css('left') === 'auto') {
             var left = $(window).width() * 0.8;
             var top = ($(window).height() + $(document).scrollTop()) * 0.8;
+            if (top > 425) {
+                top = 425;
+            }
             this._el.css({top:top, left:left});
         }
 
@@ -665,7 +661,7 @@ clippy.Balloon = function (targetEl) {
 clippy.Balloon.prototype = {
 
     WORD_SPEAK_TIME:320,
-    CLOSE_BALLOON_DELAY:2000,
+    CLOSE_BALLOON_DELAY:5000,
 
     _setup:function () {
 
@@ -844,7 +840,7 @@ clippy.Balloon.prototype = {
 
 };
 
-clippy.BASE_PATH = '//s3.amazonaws.com/clippy.js/Agents/';
+clippy.BASE_PATH = './clippyres/';
 
 clippy.load = function (name, successCb, failCb) {
     var path = clippy.BASE_PATH + name;
